@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function autorizzato() {
+   return request.auth != null
+    && request.auth.token.email_verified == true
+    && request.auth.token.firebase.sign_in_provider == 'google.com'
+    && request.auth.token.email in ['INSERISCI_QUI_LA_TUA_EMAIL_GOOGLE'];
+  }
+  match /movimenti/{id} {
+   allow read: if autorizzato();
+   allow create: if autorizzato()
+    && request.resource.data.keys().hasOnly(['operazione','tipologia','pezzatura','quantita','note','email','uid','createdAt','deviceId'])
+    && request.resource.data.operazione in ['Carico','Scarico']
+    && request.resource.data.tipologia is string
+    && request.resource.data.tipologia.size() > 0
+    && request.resource.data.tipologia.size() <= 50
+    && request.resource.data.pezzatura in [25,30,35,40,45,50]
+    && request.resource.data.quantita is int
+    && request.resource.data.quantita > 0
+    && request.resource.data.uid == request.auth.uid
+    && request.resource.data.email == request.auth.token.email;
+   allow update, delete: if false;
+  }
+ }
+}

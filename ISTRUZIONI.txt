@@ -1,0 +1,22 @@
+LEGNA MANAGER - PRIMA VERSIONE PWA ANDROID
+
+Contenuto: index.html, manifest.webmanifest, sw.js, icon.svg, firestore.rules.
+
+PRIMA DI USARLA:
+1. Pubblicare i file su un hosting HTTPS.
+2. Firebase Console > Authentication > Settings > Authorized domains: aggiungere il dominio HTTPS.
+3. Firestore Database > Regole: incollare firestore.rules, sostituire INSERISCI_QUI_LA_TUA_EMAIL_GOOGLE con l'indirizzo Gmail autorizzato e pubblicare.
+4. Per autorizzare altri operatori, aggiungere i loro indirizzi nella lista tra apici, separati da virgole.
+5. Testare con due telefoni prima di inserire dati reali.
+
+INSTALLAZIONE ANDROID:
+Aprire l'indirizzo HTTPS in Chrome, accedere con Google, menu Chrome > Installa app oppure Aggiungi a schermata Home.
+
+OFFLINE:
+La prima apertura e il primo accesso Google richiedono Internet. Firestore conserva localmente i dati già caricati e mette in coda i movimenti offline, sincronizzandoli quando torna la connessione.
+
+LIMITI DEL PROTOTIPO:
+- Le nuove tipologie sono salvate localmente sul singolo telefono: la gestione centralizzata delle tipologie va completata.
+- Sono caricati al massimo 500 movimenti per il calcolo delle giacenze.
+- Due scarichi concorrenti mentre i telefoni sono offline possono creare conflitti. Verificare le disponibilità dopo la sincronizzazione.
+- Questo è un prototipo da collaudare, non ancora un gestionale pronto per uso operativo. Le regole di sicurezza devono essere configurate prima dell'accesso.

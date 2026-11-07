@@ -13,7 +13,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const cfg={apiKey:"AIzaSyADSJXkyCuzebeKLp7ulKriNWSqE1RlT1I",authDomain:"magazzino-legna-45028.firebaseapp.com",projectId:"magazzino-legna-45028",storageBucket:"magazzino-legna-45028.firebasestorage.app",messagingSenderId:"381929017257",appId:"1:381929017257:web:3dbc6e99b6fb6673e8feb8"};
-firebase.initializeApp(cfg);const auth=firebase.auth(),db=firebase.firestore();db.enablePersistence({synchronizeTabs:true}).catch(()=>{});const $=x=>document.getElementById(x),sizes=[25,30,35,40,45,50];let user=null,docs=[],types=['Faggio','Mista'],stop=null;
+firebase.initializeApp(cfg);const auth=firebase.auth(),db=firebase.firestore();auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(e=>console.error('Persistenza accesso non disponibile:',e));db.enablePersistence({synchronizeTabs:true}).catch(()=>{});const $=x=>document.getElementById(x),sizes=[25,30,35,40,45,50];let user=null,docs=[],types=['Faggio','Mista'],stop=null;
 function status(t){$('status').textContent=t}
 function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function notice(id,t,ok){$(id).textContent=t;$(id).className='msg '+(ok?'ok':'bad')}
@@ -22,8 +22,8 @@ auth.languageCode='it';
 $('loginBtn').onclick=async()=>{
   const btn=$('loginBtn');btn.disabled=true;btn.textContent='Accesso in corso…';$('loginMsg').className='msg';$('loginMsg').textContent='';
   try{
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     const provider=new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({prompt:'select_account'});
     await auth.signInWithPopup(provider);
   }catch(e){
     console.error('Errore accesso Google:',e);
